@@ -24,21 +24,57 @@ public class TempConversion {
     }
 
     public static double getTemp(String unit) {
-        System.out.printf("%-40s : ", String.format("Please enter °%s temperature to convert", unit));
+        System.out.printf("Please enter °%s temperature to convert: ", unit);
         return Double.parseDouble(input.nextLine());
     }
 
     public static String getUnitChoice() {
-        System.out.printf("%-4s : %40s%n", "C).", "To convert a °C temperature");
-        System.out.printf("%-4s : %40s%n", "F).", "To convert a °F temperature");
-        System.out.printf("%-4s : %40s%n", "K).", "To convert a °K temperature");
-        System.out.printf("%-4s : %40s%n", "Q).", "To quit");
+        System.out.println("Enter the temperature unit (C, F, K, or Q to quit):");
         return input.nextLine();
     }
 
     public static void main(String[] args) {
         while(true) {
+            String fromUnit = getUnitChoice();
+            if (fromUnit.equalsIgnoreCase("Q")) {
+                break;
+            }
 
+            String toUnit = getUnitChoice();
+            if (toUnit.equalsIgnoreCase("Q")) {
+                break;
+            }
+
+            double temp = getTemp(fromUnit);
+
+            double convertedTemp = 0.0;
+            switch (fromUnit.toUpperCase()) {
+                case "C":
+                    switch (toUnit.toUpperCase()) {
+                        case "F":
+                            convertedTemp = convertC2F(temp);
+                            break;
+                        case "K":
+                            convertedTemp = convertC2K(temp);
+                            break;
+                    }
+                    break;
+                case "F":
+                    switch (toUnit.toUpperCase()) {
+                        case "C":
+                            convertedTemp = convertF2C(temp);
+                            break;
+                        case "K":
+                            convertedTemp = convertF2K(temp);
+                            break;
+                    }
+                    break;
+                case "K":
+                    convertedTemp = convertK2C(temp);
+                    break;
+            }
+
+            System.out.printf("The temperature in °%s is %.2f%n", toUnit, convertedTemp);
         }
     }
 }
